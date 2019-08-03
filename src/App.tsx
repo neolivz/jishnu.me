@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import ContentEditable from "react-contenteditable";
 
@@ -63,10 +63,15 @@ const VisitiorName = styled(ContentEditable)`
 `;
 
 const App: React.FC = () => {
-  const [visitorName, setVisitorName] = useState("");
+  const [visitorName, setVisitorName] = useState(
+    sessionStorage.getItem("visitorName") || ""
+  );
   const onVisitorNameChange = useCallback(e => {
     setVisitorName(e.target.value);
   }, []);
+  useEffect(() => {
+    sessionStorage.setItem("visitorName", visitorName);
+  }, [visitorName]);
   return (
     <AppContainer>
       <ProfileContentWrapper>
