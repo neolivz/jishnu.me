@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
+import ContentEditable from "react-contenteditable";
+
 import { primary, fontColorOnPrimary } from "./styleGuide/colors";
 import dp from "./me.jpg";
 
@@ -34,15 +36,45 @@ const ProfileContent = styled.div`
 
 const WelcomeMessage = styled.div`
   font-size: 10vh;
+  height: 10vh;
+  line-height: 10vh;
+  display: flex;
+  &:before {
+    content: "Hello,";
+    padding-right: 1vh;
+  }
+  &:after {
+    content: "!";
+    padding-left: 1vh;
+  }
+`;
+
+const VisitiorName = styled(ContentEditable)`
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${fontColorOnPrimary};
+  color: ${fontColorOnPrimary};
+  font-size: 10vh;
+  min-width: 100px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const App: React.FC = () => {
+  const [visitorName, setVisitorName] = useState("");
+  const onVisitorNameChange = useCallback(e => {
+    setVisitorName(e.target.value);
+  }, []);
   return (
     <AppContainer>
       <ProfileContentWrapper>
         <ProfileContent />
       </ProfileContentWrapper>
-      <WelcomeMessage>Hello Welcome!</WelcomeMessage>
+      <WelcomeMessage>
+        <VisitiorName html={visitorName} onChange={onVisitorNameChange} />
+      </WelcomeMessage>
     </AppContainer>
   );
 };
